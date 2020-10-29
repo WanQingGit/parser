@@ -1,0 +1,310 @@
+/*
+ * qtoken_gen.c
+ *
+ *  Created on: May 24, 2019
+ *  Author: WanQing<1109162935@qq.com>
+ */
+
+#include "qtoken_gen.h"
+
+#include "qmem.h"
+#include "qvector.h"
+#include <string.h>
+#include "qio.h"
+#include "qcontrol.h"
+#define gchar(gen) (*gen->ptr)
+#define gsave(gen) gen->buf[gen->nbuf++]=gchar(gen)
+#define gnext(gen) gen->ptr++
+#define save_next(gen) do{gsave(gen);gnext(gen);}while(0)
+#define resetbuf(gen) (gen->nbuf=0)
+//enum {
+//	TW_START,TW_NAME, TW_NUM, TW_STRING,
+//	 TW_END,TW_NLINE, TW_NIL,
+//};
+const char *buildIn[] = { "START", "STAT", "NAME", "NUM", "BOOL", "STRING", /*"FLT", "INT",*/
+"$", "NULL", "NLINE", "ε", };
+//qgen *generator = NULL;
+qgen* createGen(char *path) {
+	qgen *gen = qcalloc(qgen);
+	gen->symbols = Arr.create(0);
+	gen->terminals = RB.create(typeInt, typeString);
+	gen->nterminals = RB.create(typeInt, typeString);
+	sky_assert(0 == create_nt(gen, buildIn[0]));
+	sky_assert(1 == create_nt(gen, buildIn[1]));
+	for (int i = TW_NAME; i <= TW_NIL; i++) {
+		sky_assert((i|TFLAG) == (create_terminal(gen, buildIn[i])));
+	}
+	char *buf = file_read(path);
+	printf("%s\n\n", buf);
+	gen->content = gen->ptr = buf;
+	gen->numGen = RB.create(NULL, NULL);
+	return gen;
+}
+void destroyGen(qgen* gen) {
+	RB.destroy(&gen->terminals, NULL);
+	RB.destroy(&gen->nterminals, NULL);
+	RB.destroy(&gen->all_gram, NULL);
+	RB.destroy(&gen->numGen, NULL);
+	Arr.destroy(&gen->grams, ARR_TYPE_FREE);
+	Arr.destroy(&gen->symbols, ARR_NOT_FREE);
+	if (gen->content)
+		qfree(gen->content);
+	qfree(gen);
+}
+
+tktype next_word(qgen *gen) {
+	byte flag;
+	resetbuf(gen);
+	do {
+		switch (gchar(gen)) {
+		case 0:
+			return gtype(gen) = TAB_EOS;
+		case '#':
+			while (!is_newline(gchar(gen)) && gchar(gen)) {
+				gnext(gen);
+			}
+//			printf("#\n");
+			break;
+		case '"':
+		case '\'':
+			flag = gchar(gen);
+			gnext(gen);
+			while (gchar(gen) != flag) {
+				sky_assert(is_print(gchar(gen)));
+				save_next(gen);
+			}
+//			gen->buf[gen->nbuf] = '\0';
+			qstr* str = STR.create(gen->buf, gen->nbuf);
+			add_terminal(gen, str);
+//			if (str->info == 0) {
+//				str->info = gen->symbol->length;
+//				sky_assert(RB.insert(gen->terminals,gen->symbol->length,str,NULL));
+//				Arr.append(&gen->symbol, str);
+//			} else {
+
+//			}
+//			str->info = str->info | TFLAG;
+			ginfo(gen) = (str->info & IDMASK) | TFLAG; // & IDMASK;
+			gnext(gen);
+			return gtype(gen) = TAB_TERMINAL;
+		case '\r':
+		case '\n':
+		case ' ':
+		case '\f':
+		case '\t':
+		case '\v':
+			gnext(gen);
+			continue;
+		case '[':
+		case ']':
+		case '|':
+		case '(':
+		case ')':
+		case '{':
+		case '}':
+			goto df;
+			break;
+		default:
+			if (is_alp(gchar(gen))) {
+				while (is_alp(gchar(gen)) || is_dec(gchar(gen))) {
+					save_next(gen);
+				}
+				qstr* str = STR.create(gen->buf, gen->nbuf);
+				if (gchar(gen) == ':') {
+//					sky_assert(flag == '\r' || flag == '\n');
+					gtype(gen) = TAB_NEWNT;
+					gnext(gen);
+				} else {
+					gtype(gen) = TAB_NT;
+				}
+				if (str->info & TFLAG) {
+					int id = str->info & IDMASK;
+					if (id <= TW_NIL && id) {
+						gtype(gen) = TAB_TERMINAL;
+						ginfo(gen) = str->info;
+					} else
+						sky_error(
+								"The name of terminal and non-terminal  cannot be the same!",
+								0);
+				} else if ((str->info & NTFLAG) == 0) {
+					add_nt(gen, str);
+					ginfo(gen) = str->info & IDMASK;
+				} else {
+//					str->info = str->info | NTFLAG;
+					ginfo(gen) = str->info & IDMASK;
+				}
+			} else {
+				skyc_error("the format of id is wrong!");
+			}
+			return gtype(gen);
+		} //end switch
+	} while (gchar(gen));
+	df: gtype(gen) = gchar(gen);
+	gnext(gen);
+	return gtype(gen);
+}
+
+WordID add_nt(qgen *gen, qstr *str) {
+	if (str->info & TFLAG) {
+		sky_assert((str->info & TFLAG) == 0);
+	}
+	if ((str->info & NTFLAG) == 0) {
+		str->info = gen->symbols->length | NTFLAG;
+		sky_assert(RB.insert(gen->nterminals,gen->symbols->length,str,NULL));
+		Arr.append(gen->symbols, str);
+
+	}
+	return str->info & IDMASK;
+}
+
+WordID add_terminal(qgen *gen, qstr *str) {
+	if (str->info & NTFLAG)
+		sky_check((str->info&NTFLAG)==0,
+				"The name of terminal and non-terminal  cannot be the same!");
+//	sky_assert((str->info&NTFLAG) == 0);
+	if ((str->info & TFLAG) == 0) {
+		str->info = gen->symbols->length | TFLAG;
+		;
+		sky_assert(RB.insert(gen->terminals,gen->symbols->length,str,NULL));
+		Arr.append(gen->symbols, str);
+	}
+	return str->info;
+}
+// @formatter:off
+struct transfer{
+	char c[3];
+	char s[5];
+}tablechar[]={
+		{"+","ADD"},
+		{".","DOT"},
+		{"-","SUB"},
+		{"*","MUL"},
+		{"/","DIV"},
+		{"%","MOD"},
+		{"&","AND"},
+		{"^","XOR"},
+		{"!","INV"},
+		{"?","QUE"},
+		{"~","NOT"},
+		{"{","BBL"},
+		{"}","BBR"},
+		{"[","MBL"},
+		{"]","MBR"},
+		{"(","SBL"},
+		{")","SBR"},
+		{",","COM"},
+		{"$","END"},
+		{":","COL"},
+		{"ε","NIL"},
+		{"@","AT"},
+		{"|","OR"},
+		{">","GT"},
+		{"<","LT"},
+		{"=","EQ"},
+};
+//@formatter:on
+void gen_wordFile(qgen *gen, char *path) {
+	char *prefix = "/*\n"
+			" *  this is generated by code.\n"
+			" *  If you want to modify, please modify the source code.\n"
+			" *\n"
+			" *  Author: WanQing<1109162935@qq.com>\n"
+			" *\n"
+			" *\n"
+			" *  A table of symbol transfer\n"
+			" *  char  string\n"
+			" *  -------------\n";
+	char *middle = " *  -------------\n"
+			" */\n"
+			"#ifndef INCLUDE_TYPEWORD_H_\n"
+			"#define INCLUDE_TYPEWORD_H_\n"
+			"#define TFLAG (1<<20)\n\n"
+			"typedef enum {";
+	char *middle2 = "\n} TypeWord;\n\n"
+			"typedef enum {";
+	char *suffix = "\n} WordID;\n\n"
+			"#endif /* INCLUDE_TYPEWORD_H_ */";
+	RBTree *tableTransfer = RB.create(NULL, NULL);
+	RBTree *tempName = RB.create(NULL, NULL);
+	qvec symbols = gen->symbols;
+	int nsymbol = symbols->length;
+	char temp[20] = { 0 };
+	int len = sizeof(tablechar) / sizeof(tablechar[0]);
+	FILE *fp = fopen(path, "w");
+	fwrite(prefix, 1, strlen(prefix), fp);
+	for (int i = 0; i < len; i++) {
+		struct transfer *t = &tablechar[i];
+		RB.insert(tableTransfer, t->c[0], t->s, NULL);
+		fwrite(temp, 1, sprintf(temp, " *  '%s' | \"%s\"\n", t->c, t->s), fp);
+	}
+	fwrite(middle, 1, strlen(middle), fp);
+	qstrbuf buf = { 0 };
+	for (int i = 0; i < nsymbol; i++) {
+//		if (i == 9)
+//			printf("\n");
+		qstr *s = symbols->data[i].s;
+		char *name = s->val;
+		buf.n = 0;
+		for (int j = 0; j < s->len; j++) {
+			char c = name[j];
+			if (c > 0 && (is_alp(c) || is_dec(c)))
+				STR.add(&buf, c, 0);
+			else {
+				if (j != 0 && buf.val[buf.n - 1] != '_')
+					STR.add(&buf, '_', 0);
+				RBNode *node;
+				node = RB.search(tableTransfer, c);
+				if (c < 0)
+					j++;
+				skyc_assert_(node);
+				char *name2 = node->val;
+				STR.add(&buf, name2, strlen(name2));
+				if (j != s->len - 1)
+					STR.add(&buf, '_', 0);
+			}
+		}
+		fwrite("\n	TW_", 1, 5, fp);
+		fwrite(buf.val, 1, buf.n, fp);
+		char *newName = qcalloc2(char, buf.n + 1);
+		memcpy(newName, buf.val, buf.n);
+//		newName[buf.n]='\0';
+		RB.insert(tempName, i, newName, NULL);
+		fwrite(", // ", 1, 5, fp);
+		fwrite(name, 1, s->len, fp);
+	}
+	fwrite(middle2, 1, strlen(middle2), fp);
+	RBNode *iter = RB.min(gen->nterminals);
+	while (iter) {
+		qstr *s = iter->val;
+		char *name = s->val;
+		char *newName = RB.search(tempName, cast(int,iter->key) & IDMASK)->val;
+		int lenName = strlen(newName);
+		fwrite("\n	WI_", 1, 5, fp);
+		fwrite(newName, 1, lenName, fp);
+		fwrite(" = TW_", 1, 6, fp);
+		fwrite(newName, 1, lenName, fp);
+		fwrite(", // ", 1, 5, fp);
+		fwrite(name, 1, s->len, fp);
+		iter = RB.next(iter);
+	}
+	iter = RB.min(gen->terminals);
+	while (iter) {
+		qstr *s = iter->val;
+		char *name = s->val;
+		char *newName = RB.search(tempName, iter->key)->val;
+		int lenName = strlen(newName);
+		fwrite("\n	WI_", 1, 5, fp);
+		fwrite(newName, 1, lenName, fp);
+		fwrite(" = TFLAG | TW_", 1, 14, fp);
+		fwrite(newName, 1, lenName, fp);
+		fwrite(", // ", 1, 5, fp);
+		fwrite(name, 1, s->len, fp);
+		iter = RB.next(iter);
+	}
+	fwrite(suffix, 1, strlen(suffix), fp);
+	fclose(fp);
+	qfree(buf.val);
+	RB.destroy(&tableTransfer, RB_NOT_FREE);
+	RB.destroy(&tempName, RB_FREE_FORCE | RB_FREE_VAL);
+}
+

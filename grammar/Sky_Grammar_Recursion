@@ -1,0 +1,70 @@
+START:statlist
+STAT: ifstat | whilestat | block | localstat | funcstat
+	 | localstat |globalstat |  exprstat | importstat
+	  
+	  #assignment | callstat |
+
+explist: exp {',' exp}
+
+unop: '-' | 'not' |  '~'
+binop0: '**'
+binop1: '/' | '//' | '%' | '*'
+binop2: '+' | '-'
+binop3: '>>' | '<<'
+binop4: '<' | '<=' | '>' | '>='
+binop4: '==' | '!='
+binop5: '^' | '&' | '|'
+binop6: 'and'
+binop7: 'or'
+binop8: '=' | '+=' | '-=' | '*=' |  '/=' | '%=' | '&=' | '|=' | '^=' |
+        '<<=' | '>>=' | '**=' | '//='
+arith_expr0: unop_exp { binop0 unop_exp }
+arith_expr1: arith_expr0 { binop1 arith_expr0 }
+arith_expr2: arith_expr1 { binop2 arith_expr1 } 
+arith_expr3: arith_expr2 { binop3 arith_expr2 } 
+arith_expr4: arith_expr3 { binop4 arith_expr3 } 
+arith_expr5: arith_expr4 { binop5 arith_expr4 } 
+arith_expr6: arith_expr5 { binop6 arith_expr5 } 
+arith_expr7: arith_expr6 { binop7 arith_expr6 } 
+arith_expr8: arith_expr7 { binop8 arith_expr7 } 
+#binop:  '+' | '-' | '*' | '/' | '//' | '^' | '%' | 
+#	 '&' | '~' | '|' | '>>' | '<<' | 
+#	 '<' | '<=' | '>' | '>=' | '==' | '~=' | 
+#	 'and' | 'or'
+unop_exp: [ unop ] simpleexp        
+exp: arith_expr8
+#exprstat: suffixedexp [assignment] #不是VCALL 则解析 assignment
+#assignment:{ ',' suffixedexp } '=' explist
+#assignment: suffixedexp { ',' suffixedexp } '=' explist
+assignstat: varlist '=' explist
+#callstat: suffixedexp funcargs
+varlist: variable {',' variable}
+variable: NAME | ( suffixedexp '[' exp ']' ) | ( suffixedexp '.' NAME )
+ifstat: 'if' exp block {'elif' exp block} ['else' block ]
+whilestat: 'while' exp block
+dot_name: NAME {'.'NAME}
+importstat: 'import' dot_name [':' namelist] ['as' namelist]
+retstat: [explist] 
+funcstat: 'func' funcname funcbody
+namelist: NAME {',' NAME}
+localstat: 'var' namelist '=' explist
+globalstat: 'global' namelist '=' explist
+funcname: NAME { '.' NAME} 
+simpleexp: NUM | STRING | BOOL | functiondef | suffixedexp
+		 | listconstructor | mapconstructor
+mapconstructor: '{' [ fieldlist ] '}'
+listconstructor: '[' [ explist ] ']'
+fieldlist: field { ',' field } [',']
+field: NAME ':' exp
+functiondef: 'func' funcbody
+funcbody: '(' [parlist] ')' block
+parlist: namelist [',' '...' NAME] 
+parlist: ['...' NAME] 
+block: '{' [statlist] '}'
+statlist: [NLINE] STAT {NLINE STAT} [NLINE]
+#带有后缀的表达式
+suffixedexp: primaryexp { fieldsel | yindex | funcargs }
+primaryexp: NAME | ( '(' exp ')' )
+yindex: '[' exp ']'
+fieldsel: '.' NAME
+funcargs: '(' [explist] ')'

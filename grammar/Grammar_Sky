@@ -1,0 +1,68 @@
+START: stats
+block: '{'  stats '}'
+binop0: '**'
+binop1: '/' | '//' | '%' | '*'
+binop2: '+' | '-'
+binop3: '>>' | '<<'
+binop4: '<' | '<=' | '>' | '>='
+binop4: '==' | '!='
+binop5: '^' | '&' | '|'
+binop6: 'and'
+binop7: 'or'
+binop8: '=' | '+=' | '-=' | '*=' |  '/=' | '%=' | '&=' | '|=' | '^=' |
+        '<<=' | '>>=' | '**=' | '//='
+unop_exp: [ unop ] exp1        
+arith_expr0: unop_exp { binop0 unop_exp }
+arith_expr1: arith_expr0 { binop1 arith_expr0 }
+arith_expr2: arith_expr1 { binop2 arith_expr1 } 
+arith_expr3: arith_expr2 { binop3 arith_expr2 } 
+arith_expr4: arith_expr3 { binop4 arith_expr3 } 
+arith_expr5: arith_expr4 { binop5 arith_expr4 } 
+arith_expr6: arith_expr5 { binop6 arith_expr5 } 
+arith_expr7: arith_expr6 { binop7 arith_expr6 } 
+arith_expr8: arith_expr7 { binop8 arith_expr7 } 
+
+#binop:  '+' | '-' | '*' | '/' | '//' | '^' | '%' | 
+#	 '&' | '~' | '|' | '>>' | '<<' | 
+#	 '<' | '<=' | '>' | '>=' | '==' | '~=' | 
+#	 'and' | 'or'
+unop: '-' | 'not' | '~'
+
+namelist: NAME {',' NAME}
+dotname: NAME {'.'NAME}
+#atom: dotname | NUM | STRING 
+varlist:  variable {',' variable}
+#variable 可以是exp.b exp[],但不可以已()结尾
+variable:  NAME | (prefixexp '[' exp ']') | (prefixexp '.' NAME) 
+#prefixexp可以是a.b a() a[]有后缀的式子
+#functioncall使得prefixexp可以以()结尾
+prefixexp: variable | functioncall | ('(' exp ')')
+#args使得functioncall一定要()结尾
+functioncall:  prefixexp args
+functiondef: 'func' dotname funcbody
+funcbody: parlist [NLINE] block
+parlist: '(' namelist ')'
+args:  '(' [explist] ')'
+#arith_expr: exp binop exp 
+exp:arith_expr8 | exp1 | exp2
+#可以和单目运算符结合的式子           a3d0
+exp1:BOOL | NUM  | NULL |  prefixexp   	
+exp2:mapconstructor | listconstructor | STRING	
+mapconstructor: '{' [fieldlist] '}'
+listconstructor: '[' [explist] ']'
+fieldlist:  field {',' field} [',']
+field: exp ':' exp
+explist: exp {',' exp}
+assign_stat: varlist '=' explist
+retstat: 'return' [explist]
+whilestat: 'while' exp block
+#args:explist | ('(' explist ')')
+callstat: functioncall
+importstat: 'import' dotname [':' namelist] ['as' namelist]
+ifstat: 'if' exp block {'elif' exp block} ['else' block]
+var_assign: namelist ['=' explist]
+localstat: 'var' var_assign
+globalstat: 'global' var_assign
+STAT: assign_stat|retstat|callstat|block|functiondef|whilestat|
+	ifstat|importstat|localstat|globalstat
+stats: [NLINE] STAT {NLINE STAT} [NLINE]

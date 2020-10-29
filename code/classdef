@@ -1,0 +1,15 @@
+class Person(object){
+	def  __init__(name){ # _init_ 8
+		this.name = name  
+    }
+    func say(){
+		print("I am Person")
+	}
+	def  walk(){
+		say()
+		print(this.name)
+	}
+}
+a=Person("qing")
+#var a           expr 132(1) | call_stmt: var_expr   
+a.walk()

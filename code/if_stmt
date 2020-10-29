@@ -1,0 +1,11 @@
+var b
+if a{
+  b=1
+}elif(b){
+  b=2
+}elif(b){
+  b=3
+}else{
+  b=4	
+}
+#

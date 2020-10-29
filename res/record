@@ -1,0 +1,325 @@
+Start testing file block ...
+expr 0(1) | stats.0: ε   
+0 2  | stats.0  | NAME = NAME 
+0 2 38  | stats.0 NAME  | = NAME 
+expr 1(1) | atom: NAME   
+0 2 5  | stats.0 atom  | = NAME 
+expr 2(1) | atom_expr.0: ε   
+0 2 5 65  | stats.0 atom atom_expr.0  | = NAME 
+expr 3(2) | atom_expr: atom  atom_expr.0   
+0 2 8  | stats.0 atom_expr  | = NAME 
+expr 4(1) | assign_stmt.0: atom_expr   
+0 2 23  | stats.0 assign_stmt.0  | = NAME 
+expr 5(1) | assign_stmt.1: ε   
+0 2 23 76  | stats.0 assign_stmt.0 assign_stmt.1  | = NAME 
+0 2 23 76 379  | stats.0 assign_stmt.0 assign_stmt.1 =  | NAME 
+0 2 23 76 379 918  | ... stats.0 assign_stmt.0 assign_stmt.1 = NAME  | 
+expr 6(1) | atom: NAME   
+0 2 23 76 379 898  | ... stats.0 assign_stmt.0 assign_stmt.1 = atom  | NLINE { NLINE 
+expr 7(1) | atom_expr.0: ε   
+0 2 23 76 379 898 1620  | ... assign_stmt.0 assign_stmt.1 = atom atom_expr.0  | NLINE { NLINE 
+expr 8(2) | atom_expr: atom  atom_expr.0   
+0 2 23 76 379 901  | ... stats.0 assign_stmt.0 assign_stmt.1 = atom_expr  | NLINE { NLINE 
+expr 9(1) | power.0: ε   
+0 2 23 76 379 901 1622  | ... assign_stmt.0 assign_stmt.1 = atom_expr power.0  | NLINE { NLINE 
+expr 10(2) | power: atom_expr  power.0   
+0 2 23 76 379 902  | ... stats.0 assign_stmt.0 assign_stmt.1 = power  | NLINE { NLINE 
+expr 11(1) | factor: power   
+0 2 23 76 379 903  | ... stats.0 assign_stmt.0 assign_stmt.1 = factor  | NLINE { NLINE 
+expr 12(1) | term.0: ε   
+0 2 23 76 379 903 1624  | ... assign_stmt.0 assign_stmt.1 = factor term.0  | NLINE { NLINE 
+expr 13(2) | term: factor  term.0   
+0 2 23 76 379 904  | ... stats.0 assign_stmt.0 assign_stmt.1 = term  | NLINE { NLINE 
+expr 14(1) | arith_expr.0: ε   
+0 2 23 76 379 904 1626  | ... assign_stmt.0 assign_stmt.1 = term arith_expr.0  | NLINE { NLINE 
+expr 15(2) | arith_expr: term  arith_expr.0   
+0 2 23 76 379 906  | ... stats.0 assign_stmt.0 assign_stmt.1 = arith_expr  | NLINE { NLINE 
+expr 16(1) | shift_expr.0: ε   
+0 2 23 76 379 906 1629  | ... assign_stmt.0 assign_stmt.1 = arith_expr shift_expr.0  | NLINE { NLINE 
+expr 17(2) | shift_expr: arith_expr  shift_expr.0   
+0 2 23 76 379 907  | ... stats.0 assign_stmt.0 assign_stmt.1 = shift_expr  | NLINE { NLINE 
+expr 18(1) | and_expr.0: ε   
+0 2 23 76 379 907 1631  | ... assign_stmt.0 assign_stmt.1 = shift_expr and_expr.0  | NLINE { NLINE 
+expr 19(2) | and_expr: shift_expr  and_expr.0   
+0 2 23 76 379 908  | ... stats.0 assign_stmt.0 assign_stmt.1 = and_expr  | NLINE { NLINE 
+expr 20(1) | xor_expr.0: ε   
+0 2 23 76 379 908 1632  | ... assign_stmt.0 assign_stmt.1 = and_expr xor_expr.0  | NLINE { NLINE 
+expr 21(2) | xor_expr: and_expr  xor_expr.0   
+0 2 23 76 379 909  | ... stats.0 assign_stmt.0 assign_stmt.1 = xor_expr  | NLINE { NLINE 
+expr 22(1) | expr.0: ε   
+0 2 23 76 379 909 1633  | ... assign_stmt.0 assign_stmt.1 = xor_expr expr.0  | NLINE { NLINE 
+expr 23(2) | expr: xor_expr  expr.0   
+0 2 23 76 379 897  | ... stats.0 assign_stmt.0 assign_stmt.1 = expr  | NLINE { NLINE 
+expr 24(1) | comparison.0: ε   
+0 2 23 76 379 897 1618  | ... assign_stmt.0 assign_stmt.1 = expr comparison.0  | NLINE { NLINE 
+expr 25(2) | comparison: expr  comparison.0   
+0 2 23 76 379 910  | ... stats.0 assign_stmt.0 assign_stmt.1 = comparison  | NLINE { NLINE 
+expr 26(1) | not_test: comparison   
+0 2 23 76 379 911  | ... stats.0 assign_stmt.0 assign_stmt.1 = not_test  | NLINE { NLINE 
+expr 27(1) | and_test.0: ε   
+0 2 23 76 379 911 1634  | ... assign_stmt.0 assign_stmt.1 = not_test and_test.0  | NLINE { NLINE 
+expr 28(2) | and_test: not_test  and_test.0   
+0 2 23 76 379 912  | ... stats.0 assign_stmt.0 assign_stmt.1 = and_test  | NLINE { NLINE 
+expr 29(1) | or_test.0: ε   
+0 2 23 76 379 912 1635  | ... assign_stmt.0 assign_stmt.1 = and_test or_test.0  | NLINE { NLINE 
+expr 30(2) | or_test: and_test  or_test.0   
+0 2 23 76 379 913  | ... stats.0 assign_stmt.0 assign_stmt.1 = or_test  | NLINE { NLINE 
+expr 31(1) | test.0: ε   
+0 2 23 76 379 913 1636  | ... assign_stmt.0 assign_stmt.1 = or_test test.0  | NLINE { NLINE 
+expr 32(2) | test: or_test  test.0   
+0 2 23 76 379 896  | ... stats.0 assign_stmt.0 assign_stmt.1 = test  | NLINE { NLINE 
+expr 33(1) | testlist_star_expr.0: test   
+0 2 23 76 379 917  | ... stats.0 assign_stmt.0 assign_stmt.1 = testlist_star_expr.0  | NLINE { NLINE 
+expr 34(1) | testlist_star_expr.1: ε   
+0 2 23 76 379 917 1638  | ... assign_stmt.0 assign_stmt.1 = testlist_star_expr.0 testlist_star_expr.1  | NLINE { NLINE 
+expr 35(1) | testlist_star_expr.2: ε   
+0 2 23 76 379 917 1638 2380  | ... assign_stmt.1 = testlist_star_expr.0 testlist_star_expr.1 testlist_star_expr.2  | NLINE { NLINE 
+expr 36(3) | testlist_star_expr: testlist_star_expr.0  testlist_star_expr.1  testlist_star_expr.2   
+0 2 23 76 379 916  | ... stats.0 assign_stmt.0 assign_stmt.1 = testlist_star_expr  | NLINE { NLINE 
+expr 37(1) | assign.0: testlist_star_expr   
+0 2 23 76 379 915  | ... stats.0 assign_stmt.0 assign_stmt.1 = assign.0  | NLINE { NLINE 
+expr 38(2) | assign: '=' assign.0   
+0 2 23 76 377  | stats.0 assign_stmt.0 assign_stmt.1 assign  | NLINE { NLINE 
+expr 39(1) | assign_stmt.2.1: ε   
+0 2 23 76 377 883  | ... stats.0 assign_stmt.0 assign_stmt.1 assign assign_stmt.2.1  | NLINE { NLINE 
+expr 40(2) | assign_stmt.2: assign  assign_stmt.2.1   
+0 2 23 76 375  | stats.0 assign_stmt.0 assign_stmt.1 assign_stmt.2  | NLINE { NLINE 
+expr 41(3) | assign_stmt: assign_stmt.0  assign_stmt.1  assign_stmt.2   
+0 2 15  | stats.0 assign_stmt  | NLINE { NLINE 
+expr 42(1) | simple_stmt: assign_stmt   
+0 2 13  | stats.0 simple_stmt  | NLINE { NLINE 
+expr 43(1) | STAT: simple_stmt   
+destroy redundant 3 tokens!
+0 2 4  | stats.0 STAT  | NLINE { NLINE 
+expr 44(1) | stats.1: ε   
+0 2 4 63  | stats.0 STAT stats.1  | NLINE { NLINE 
+0 2 4 63 365  | stats.0 STAT stats.1 NLINE  | { NLINE 
+0 2 4 63 365 43  | ... stats.0 STAT stats.1 NLINE {  | NLINE 
+0 2 4 63 365 43 3  | ... STAT stats.1 NLINE { NLINE  | 
+expr 45(1) | stats.0: NLINE   
+0 2 4 63 365 43 105  | ... STAT stats.1 NLINE { stats.0  | NAME += NUM 
+0 2 4 63 365 43 105 471  | ... stats.1 NLINE { stats.0 NAME  | += NUM 
+expr 46(1) | atom: NAME   
+0 2 4 63 365 43 105 440  | ... stats.1 NLINE { stats.0 atom  | += NUM 
+expr 47(1) | atom_expr.0: ε   
+0 2 4 63 365 43 105 440 1036  | ... NLINE { stats.0 atom atom_expr.0  | += NUM 
+expr 48(2) | atom_expr: atom  atom_expr.0   
+0 2 4 63 365 43 105 442  | ... stats.1 NLINE { stats.0 atom_expr  | += NUM 
+expr 49(1) | assign_stmt.0: atom_expr   
+0 2 4 63 365 43 105 456  | ... stats.1 NLINE { stats.0 assign_stmt.0  | += NUM 
+expr 50(1) | assign_stmt.1: ε   
+0 2 4 63 365 43 105 456 1045  | ... NLINE { stats.0 assign_stmt.0 assign_stmt.1  | += NUM 
+0 2 4 63 365 43 105 456 1045 380  | ... { stats.0 assign_stmt.0 assign_stmt.1 +=  | NUM 
+expr 51(1) | augassign: '+='  
+0 2 4 63 365 43 105 456 1045 1804  | ... { stats.0 assign_stmt.0 assign_stmt.1 augassign  | NUM 
+0 2 4 63 365 43 105 456 1045 1804 1099  | ... stats.0 assign_stmt.0 assign_stmt.1 augassign NUM  | 
+expr 52(1) | atom: NUM   
+0 2 4 63 365 43 105 456 1045 1804 1081  | ... stats.0 assign_stmt.0 assign_stmt.1 augassign atom  | NLINE { NLINE 
+expr 53(1) | atom_expr.0: ε   
+0 2 4 63 365 43 105 456 1045 1804 1081 1842  | ... assign_stmt.0 assign_stmt.1 augassign atom atom_expr.0  | NLINE { NLINE 
+expr 54(2) | atom_expr: atom  atom_expr.0   
+0 2 4 63 365 43 105 456 1045 1804 1082  | ... stats.0 assign_stmt.0 assign_stmt.1 augassign atom_expr  | NLINE { NLINE 
+expr 55(1) | power.0: ε   
+0 2 4 63 365 43 105 456 1045 1804 1082 1844  | ... assign_stmt.0 assign_stmt.1 augassign atom_expr power.0  | NLINE { NLINE 
+expr 56(2) | power: atom_expr  power.0   
+0 2 4 63 365 43 105 456 1045 1804 1083  | ... stats.0 assign_stmt.0 assign_stmt.1 augassign power  | NLINE { NLINE 
+expr 57(1) | factor: power   
+0 2 4 63 365 43 105 456 1045 1804 1084  | ... stats.0 assign_stmt.0 assign_stmt.1 augassign factor  | NLINE { NLINE 
+expr 58(1) | term.0: ε   
+0 2 4 63 365 43 105 456 1045 1804 1084 1846  | ... assign_stmt.0 assign_stmt.1 augassign factor term.0  | NLINE { NLINE 
+expr 59(2) | term: factor  term.0   
+0 2 4 63 365 43 105 456 1045 1804 1085  | ... stats.0 assign_stmt.0 assign_stmt.1 augassign term  | NLINE { NLINE 
+expr 60(1) | arith_expr.0: ε   
+0 2 4 63 365 43 105 456 1045 1804 1085 1848  | ... assign_stmt.0 assign_stmt.1 augassign term arith_expr.0  | NLINE { NLINE 
+expr 61(2) | arith_expr: term  arith_expr.0   
+0 2 4 63 365 43 105 456 1045 1804 1087  | ... stats.0 assign_stmt.0 assign_stmt.1 augassign arith_expr  | NLINE { NLINE 
+expr 62(1) | shift_expr.0: ε   
+0 2 4 63 365 43 105 456 1045 1804 1087 1851  | ... assign_stmt.0 assign_stmt.1 augassign arith_expr shift_expr.0  | NLINE { NLINE 
+expr 63(2) | shift_expr: arith_expr  shift_expr.0   
+0 2 4 63 365 43 105 456 1045 1804 1088  | ... stats.0 assign_stmt.0 assign_stmt.1 augassign shift_expr  | NLINE { NLINE 
+expr 64(1) | and_expr.0: ε   
+0 2 4 63 365 43 105 456 1045 1804 1088 1853  | ... assign_stmt.0 assign_stmt.1 augassign shift_expr and_expr.0  | NLINE { NLINE 
+expr 65(2) | and_expr: shift_expr  and_expr.0   
+0 2 4 63 365 43 105 456 1045 1804 1089  | ... stats.0 assign_stmt.0 assign_stmt.1 augassign and_expr  | NLINE { NLINE 
+expr 66(1) | xor_expr.0: ε   
+0 2 4 63 365 43 105 456 1045 1804 1089 1854  | ... assign_stmt.0 assign_stmt.1 augassign and_expr xor_expr.0  | NLINE { NLINE 
+expr 67(2) | xor_expr: and_expr  xor_expr.0   
+0 2 4 63 365 43 105 456 1045 1804 1090  | ... stats.0 assign_stmt.0 assign_stmt.1 augassign xor_expr  | NLINE { NLINE 
+expr 68(1) | expr.0: ε   
+0 2 4 63 365 43 105 456 1045 1804 1090 1855  | ... assign_stmt.0 assign_stmt.1 augassign xor_expr expr.0  | NLINE { NLINE 
+expr 69(2) | expr: xor_expr  expr.0   
+0 2 4 63 365 43 105 456 1045 1804 1080  | ... stats.0 assign_stmt.0 assign_stmt.1 augassign expr  | NLINE { NLINE 
+expr 70(1) | comparison.0: ε   
+0 2 4 63 365 43 105 456 1045 1804 1080 1840  | ... assign_stmt.0 assign_stmt.1 augassign expr comparison.0  | NLINE { NLINE 
+expr 71(2) | comparison: expr  comparison.0   
+0 2 4 63 365 43 105 456 1045 1804 1091  | ... stats.0 assign_stmt.0 assign_stmt.1 augassign comparison  | NLINE { NLINE 
+expr 72(1) | not_test: comparison   
+0 2 4 63 365 43 105 456 1045 1804 1092  | ... stats.0 assign_stmt.0 assign_stmt.1 augassign not_test  | NLINE { NLINE 
+expr 73(1) | and_test.0: ε   
+0 2 4 63 365 43 105 456 1045 1804 1092 1856  | ... assign_stmt.0 assign_stmt.1 augassign not_test and_test.0  | NLINE { NLINE 
+expr 74(2) | and_test: not_test  and_test.0   
+0 2 4 63 365 43 105 456 1045 1804 1093  | ... stats.0 assign_stmt.0 assign_stmt.1 augassign and_test  | NLINE { NLINE 
+expr 75(1) | or_test.0: ε   
+0 2 4 63 365 43 105 456 1045 1804 1093 1857  | ... assign_stmt.0 assign_stmt.1 augassign and_test or_test.0  | NLINE { NLINE 
+expr 76(2) | or_test: and_test  or_test.0   
+0 2 4 63 365 43 105 456 1045 1804 1094  | ... stats.0 assign_stmt.0 assign_stmt.1 augassign or_test  | NLINE { NLINE 
+expr 77(1) | test.0: ε   
+0 2 4 63 365 43 105 456 1045 1804 1094 1858  | ... assign_stmt.0 assign_stmt.1 augassign or_test test.0  | NLINE { NLINE 
+expr 78(2) | test: or_test  test.0   
+0 2 4 63 365 43 105 456 1045 1804 1079  | ... stats.0 assign_stmt.0 assign_stmt.1 augassign test  | NLINE { NLINE 
+expr 79(1) | testlist.0: ε   
+0 2 4 63 365 43 105 456 1045 1804 1079 1838  | ... assign_stmt.0 assign_stmt.1 augassign test testlist.0  | NLINE { NLINE 
+expr 80(1) | testlist.1: ε   
+0 2 4 63 365 43 105 456 1045 1804 1079 1838 2601  | ... assign_stmt.1 augassign test testlist.0 testlist.1  | NLINE { NLINE 
+expr 81(3) | testlist: test  testlist.0  testlist.1   
+0 2 4 63 365 43 105 456 1045 1804 2536  | ... stats.0 assign_stmt.0 assign_stmt.1 augassign testlist  | NLINE { NLINE 
+expr 82(1) | assign_stmt.2.0: testlist   
+0 2 4 63 365 43 105 456 1045 1804 2537  | ... stats.0 assign_stmt.0 assign_stmt.1 augassign assign_stmt.2.0  | NLINE { NLINE 
+expr 83(2) | assign_stmt.2: augassign  assign_stmt.2.0   
+0 2 4 63 365 43 105 456 1045 1803  | ... { stats.0 assign_stmt.0 assign_stmt.1 assign_stmt.2  | NLINE { NLINE 
+expr 84(3) | assign_stmt: assign_stmt.0  assign_stmt.1  assign_stmt.2   
+0 2 4 63 365 43 105 448  | ... stats.1 NLINE { stats.0 assign_stmt  | NLINE { NLINE 
+expr 85(1) | simple_stmt: assign_stmt   
+0 2 4 63 365 43 105 446  | ... stats.1 NLINE { stats.0 simple_stmt  | NLINE { NLINE 
+expr 86(1) | STAT: simple_stmt   
+destroy redundant 3 tokens!
+0 2 4 63 365 43 105 439  | ... stats.1 NLINE { stats.0 STAT  | NLINE { NLINE 
+expr 87(1) | stats.1: ε   
+0 2 4 63 365 43 105 439 1034  | ... NLINE { stats.0 STAT stats.1  | NLINE { NLINE 
+0 2 4 63 365 43 105 439 1034 1795  | ... { stats.0 STAT stats.1 NLINE  | { NLINE 
+
+
+0 2 4 63 365 43 105 439 1034 1795 476  | ... stats.0 STAT stats.1 NLINE {  | NLINE  #0 2 4 63 365 43
+
+
+0 2 4 63 365 43 105 439 1034 1795 476 3  | ... STAT stats.1 NLINE { NLINE  | 
+expr 88(1) | stats.0: NLINE   
+0 2 4 63 365 43 105 439 1034 1795 476 105  | ... STAT stats.1 NLINE { stats.0  | NAME = NUM 
+0 2 4 63 365 43 105 439 1034 1795 476 105 471  | ... stats.1 NLINE { stats.0 NAME  | = NUM 
+expr 89(1) | atom: NAME   
+0 2 4 63 365 43 105 439 1034 1795 476 105 440  | ... stats.1 NLINE { stats.0 atom  | = NUM 
+expr 90(1) | atom_expr.0: ε   
+0 2 4 63 365 43 105 439 1034 1795 476 105 440 1036  | ... NLINE { stats.0 atom atom_expr.0  | = NUM 
+expr 91(2) | atom_expr: atom  atom_expr.0   
+0 2 4 63 365 43 105 439 1034 1795 476 105 442  | ... stats.1 NLINE { stats.0 atom_expr  | = NUM 
+expr 92(1) | assign_stmt.0: atom_expr   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456  | ... stats.1 NLINE { stats.0 assign_stmt.0  | = NUM 
+expr 93(1) | assign_stmt.1: ε   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045  | ... NLINE { stats.0 assign_stmt.0 assign_stmt.1  | = NUM 
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806  | ... { stats.0 assign_stmt.0 assign_stmt.1 =  | NUM 
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2563  | ... stats.0 assign_stmt.0 assign_stmt.1 = NUM  | 
+expr 94(1) | atom: NUM   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2542  | ... stats.0 assign_stmt.0 assign_stmt.1 = atom  | NLINE } NLINE 
+expr 95(1) | atom_expr.0: ε   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2542 3199  | ... assign_stmt.0 assign_stmt.1 = atom atom_expr.0  | NLINE } NLINE 
+expr 96(2) | atom_expr: atom  atom_expr.0   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2545  | ... stats.0 assign_stmt.0 assign_stmt.1 = atom_expr  | NLINE } NLINE 
+expr 97(1) | power.0: ε   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2545 3201  | ... assign_stmt.0 assign_stmt.1 = atom_expr power.0  | NLINE } NLINE 
+expr 98(2) | power: atom_expr  power.0   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2546  | ... stats.0 assign_stmt.0 assign_stmt.1 = power  | NLINE } NLINE 
+expr 99(1) | factor: power   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2547  | ... stats.0 assign_stmt.0 assign_stmt.1 = factor  | NLINE } NLINE 
+expr 100(1) | term.0: ε   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2547 3203  | ... assign_stmt.0 assign_stmt.1 = factor term.0  | NLINE } NLINE 
+expr 101(2) | term: factor  term.0   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2548  | ... stats.0 assign_stmt.0 assign_stmt.1 = term  | NLINE } NLINE 
+expr 102(1) | arith_expr.0: ε   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2548 3205  | ... assign_stmt.0 assign_stmt.1 = term arith_expr.0  | NLINE } NLINE 
+expr 103(2) | arith_expr: term  arith_expr.0   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2550  | ... stats.0 assign_stmt.0 assign_stmt.1 = arith_expr  | NLINE } NLINE 
+expr 104(1) | shift_expr.0: ε   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2550 3208  | ... assign_stmt.0 assign_stmt.1 = arith_expr shift_expr.0  | NLINE } NLINE 
+expr 105(2) | shift_expr: arith_expr  shift_expr.0   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2551  | ... stats.0 assign_stmt.0 assign_stmt.1 = shift_expr  | NLINE } NLINE 
+expr 106(1) | and_expr.0: ε   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2551 3210  | ... assign_stmt.0 assign_stmt.1 = shift_expr and_expr.0  | NLINE } NLINE 
+expr 107(2) | and_expr: shift_expr  and_expr.0   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2552  | ... stats.0 assign_stmt.0 assign_stmt.1 = and_expr  | NLINE } NLINE 
+expr 108(1) | xor_expr.0: ε   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2552 3211  | ... assign_stmt.0 assign_stmt.1 = and_expr xor_expr.0  | NLINE } NLINE 
+expr 109(2) | xor_expr: and_expr  xor_expr.0   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2553  | ... stats.0 assign_stmt.0 assign_stmt.1 = xor_expr  | NLINE } NLINE 
+expr 110(1) | expr.0: ε   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2553 3212  | ... assign_stmt.0 assign_stmt.1 = xor_expr expr.0  | NLINE } NLINE 
+expr 111(2) | expr: xor_expr  expr.0   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2541  | ... stats.0 assign_stmt.0 assign_stmt.1 = expr  | NLINE } NLINE 
+expr 112(1) | comparison.0: ε   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2541 3197  | ... assign_stmt.0 assign_stmt.1 = expr comparison.0  | NLINE } NLINE 
+expr 113(2) | comparison: expr  comparison.0   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2554  | ... stats.0 assign_stmt.0 assign_stmt.1 = comparison  | NLINE } NLINE 
+expr 114(1) | not_test: comparison   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2555  | ... stats.0 assign_stmt.0 assign_stmt.1 = not_test  | NLINE } NLINE 
+expr 115(1) | and_test.0: ε   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2555 3213  | ... assign_stmt.0 assign_stmt.1 = not_test and_test.0  | NLINE } NLINE 
+expr 116(2) | and_test: not_test  and_test.0   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2556  | ... stats.0 assign_stmt.0 assign_stmt.1 = and_test  | NLINE } NLINE 
+expr 117(1) | or_test.0: ε   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2556 3214  | ... assign_stmt.0 assign_stmt.1 = and_test or_test.0  | NLINE } NLINE 
+expr 118(2) | or_test: and_test  or_test.0   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2557  | ... stats.0 assign_stmt.0 assign_stmt.1 = or_test  | NLINE } NLINE 
+expr 119(1) | test.0: ε   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2557 3215  | ... assign_stmt.0 assign_stmt.1 = or_test test.0  | NLINE } NLINE 
+expr 120(2) | test: or_test  test.0   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2540  | ... stats.0 assign_stmt.0 assign_stmt.1 = test  | NLINE } NLINE 
+expr 121(1) | testlist_star_expr.0: test   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2561  | ... stats.0 assign_stmt.0 assign_stmt.1 = testlist_star_expr.0  | NLINE } NLINE 
+expr 122(1) | testlist_star_expr.1: ε   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2561 3217  | ... assign_stmt.0 assign_stmt.1 = testlist_star_expr.0 testlist_star_expr.1  | NLINE } NLINE 
+expr 123(1) | testlist_star_expr.2: ε   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2561 3217 3702  | ... assign_stmt.1 = testlist_star_expr.0 testlist_star_expr.1 testlist_star_expr.2  | NLINE } NLINE 
+expr 124(3) | testlist_star_expr: testlist_star_expr.0  testlist_star_expr.1  testlist_star_expr.2   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2560  | ... stats.0 assign_stmt.0 assign_stmt.1 = testlist_star_expr  | NLINE } NLINE 
+expr 125(1) | assign.0: testlist_star_expr   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1806 2559  | ... stats.0 assign_stmt.0 assign_stmt.1 = assign.0  | NLINE } NLINE 
+expr 126(2) | assign: '=' assign.0   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1805  | ... { stats.0 assign_stmt.0 assign_stmt.1 assign  | NLINE } NLINE 
+expr 127(1) | assign_stmt.2.1: ε   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1805 2539  | ... stats.0 assign_stmt.0 assign_stmt.1 assign assign_stmt.2.1  | NLINE } NLINE 
+expr 128(2) | assign_stmt.2: assign  assign_stmt.2.1   
+0 2 4 63 365 43 105 439 1034 1795 476 105 456 1045 1803  | ... { stats.0 assign_stmt.0 assign_stmt.1 assign_stmt.2  | NLINE } NLINE 
+expr 129(3) | assign_stmt: assign_stmt.0  assign_stmt.1  assign_stmt.2   
+0 2 4 63 365 43 105 439 1034 1795 476 105 448  | ... stats.1 NLINE { stats.0 assign_stmt  | NLINE } NLINE 
+expr 130(1) | simple_stmt: assign_stmt   
+0 2 4 63 365 43 105 439 1034 1795 476 105 446  | ... stats.1 NLINE { stats.0 simple_stmt  | NLINE } NLINE 
+expr 131(1) | STAT: simple_stmt   
+destroy redundant 3 tokens!
+0 2 4 63 365 43 105 439 1034 1795 476 105 439  | ... stats.1 NLINE { stats.0 STAT  | NLINE } NLINE 
+expr 132(1) | stats.1: ε   
+0 2 4 63 365 43 105 439 1034 1795 476 105 439 1034  | ... NLINE { stats.0 STAT stats.1  | NLINE } NLINE 
+0 2 4 63 365 43 105 439 1034 1795 476 105 439 1034 1795  | ... { stats.0 STAT stats.1 NLINE  | } NLINE 
+expr 133(1) | stats.2: NLINE   
+0 2 4 63 365 43 105 439 1034 1795 476 105 439 1034 1794  | ... { stats.0 STAT stats.1 stats.2  | } NLINE 
+expr 134(4) | stats: stats.0  STAT  stats.1  stats.2   
+0 2 4 63 365 43 105 439 1034 1795 476 1049  | ... STAT stats.1 NLINE { stats  | } NLINE 
+0 2 4 63 365 43 105 439 1034 1795 476 1049 1813  | ... stats.1 NLINE { stats }  | NLINE 
+expr 135(3) | block: '{' stats  '}'  
+0 2 4 63 365 43 105 439 1034 1795 445  | ... stats.0 STAT stats.1 NLINE block  | NLINE 
+expr 136(1) | compound_stmt: block   
+0 2 4 63 365 43 105 439 1034 1795 447  | ... stats.0 STAT stats.1 NLINE compound_stmt  | NLINE 
+expr 137(1) | STAT: compound_stmt   
+destroy redundant 7 tokens!
+0 2 4 63 365 43 105 439 1034 1795 2529  | ... stats.0 STAT stats.1 NLINE STAT  | NLINE 
+expr 138(3) | stats.1: stats.1  NLINE  STAT   
+0 2 4 63 365 43 105 439 1034  | ... NLINE { stats.0 STAT stats.1  | NLINE 
+0 2 4 63 365 43 105 439 1034 1795  | ... { stats.0 STAT stats.1 NLINE  | 
+expr 139(1) | stats.2: NLINE   
+0 2 4 63 365 43 105 439 1034 1794  | ... { stats.0 STAT stats.1 stats.2  | } $ 
+expr 140(4) | stats: stats.0  STAT  stats.1  stats.2   
+0 2 4 63 365 43 84  | ... STAT stats.1 NLINE { stats  | } $ 
+0 2 4 63 365 43 84 407  | ... stats.1 NLINE { stats }  | $ 
+expr 141(3) | block: '{' stats  '}'  
+0 2 4 63 365 12  | ... stats.0 STAT stats.1 NLINE block  | $ 
+expr 142(1) | compound_stmt: block   
+0 2 4 63 365 14  | ... stats.0 STAT stats.1 NLINE compound_stmt  | $ 
+expr 143(1) | STAT: compound_stmt   
+destroy redundant 15 tokens!
+0 2 4 63 365 807  | ... stats.0 STAT stats.1 NLINE STAT  | $ 
+expr 144(3) | stats.1: stats.1  NLINE  STAT   
+0 2 4 63  | stats.0 STAT stats.1  | $ 
+expr 145(1) | stats.2: ε   
+0 2 4 63 364  | stats.0 STAT stats.1 stats.2  | $ 
+expr 146(4) | stats: stats.0  STAT  stats.1  stats.2   
+0 1  | stats  | $ 
+expr 147(1) | START: stats   
+accept!

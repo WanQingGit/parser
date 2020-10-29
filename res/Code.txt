@@ -1,0 +1,35 @@
+# ((void *)((uintptr_t)((p)) &  ~(uintptr_t)(4 * 1024 - 1) ))
+b=1
+#@ClsDeco3(1, 2) # 等价于 bar3 = ClsDeco3(1, 2)(bar3)
+#func bar3(a, b){ 0x555555c46a80
+#    print('do something')
+#    print('return a + b = {a + b}')
+#}
+#b(1)[1]=2
+#b=a.b(1).get(1)
+#var a,b=a+1*2+2,"a"
+#a[1]
+#global x,y=a,b
+#import module1 as m1
+#import module2.b:a1,b1 as a,b
+#a={a:1,2:b}
+#a=[1,c,"b"]
+
+#if(a){
+#  b=1
+#}elif(b){
+#  c=2
+#}else{
+#  c=3
+#}
+
+#func f1(p1,p2){
+#  while(p1-p2){
+#	b,a=1*(2+3)*4+6*7,9
+#	c=b(a,1)(a)
+#  }
+#  return a,b
+#}
+#1+2+3
+#op 1+1*4;
+#end

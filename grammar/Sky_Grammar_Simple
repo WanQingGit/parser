@@ -1,0 +1,122 @@
+dictorsetmaker1: ( test ':' test ) | ( '**' expr )  
+	comp_for | ( { ',' ( test ':' test ) | ( '**' expr ) } [','] )
+START: stats
+atom: NAME | NUM | STRING | BOOL | NULL |
+	('{' [dictorsetmaker] '}') | ( '[' [testlist_comp] ']') | ( '(' [yield_expr|testlist_comp] ')')
+testlist_comp: test|star_expr  comp_for | {',' test|star_expr} [',']  
+atom_expr: atom { trailer }
+trailer: ('(' [arglist] ')') | ('[' subscriptlist ']') | ('.' NAME)
+subscriptlist: subscript {',' subscript } [',']
+subscript: test | ( [test] ':' [test] [sliceop] )
+sliceop: ':' [test]
+dictorsetmaker2: test | star_expr   
+	comp_for | ( { ','  test | star_expr  } [','] )
+dictorsetmaker: dictorsetmaker1 | dictorsetmaker2                
+power: atom_expr ['**' factor]
+factor: ('+'|'-'|'~' factor )| power
+term: factor {'*'|'@'|'/'|'%'|'//' factor}
+arith_expr: term {'+'|'-' term}
+shift_expr: arith_expr {'<<'|'>>' arith_expr}
+and_expr: shift_expr {'&' shift_expr}
+xor_expr: and_expr {'^' and_expr}
+expr: xor_expr {'|' xor_expr }
+
+comparison: expr { comp_op expr }
+comp_op: '<'|'>'|'=='|'>='|'<='|'<>'|'!='|'in'|( 'not' 'in') #|'is'|'is' 'not'
+not_test: ('not' not_test ) | comparison
+and_test: not_test { 'and' not_test }
+or_test: and_test { 'or' and_test }
+
+lambdef: 'lambda' [varargslist] ':' test
+test_nocond: or_test | lambdef_nocond
+lambdef_nocond: 'lambda' [varargslist] ':' test_nocond
+
+twostart: '**' vfpdef [',']
+vfpdefbase: vfpdef ['=' test]
+vfpdef2: '*' [ vfpdef ] {',' vfpdefbase } [',' [ twostart ] ]
+vfpdef: NAME
+varargslist:  vfpdef2 | twostart |
+	(vfpdefbase { ','vfpdefbase } [',' [ vfpdef2  | twostart ]])
+	
+test: (or_test ['if' or_test 'else' test])
+except_clause: 'except' [test ['as' NAME]]
+
+dotname: NAME { '.' NAME }
+decorator: '@' dotname [ '(' [arglist] ')' ] NLINE
+decorators: {decorator}
+
+
+
+raise_stmt: 'raise' [test ['from' test]]
+yield_expr: 'yield' [yield_arg]
+yield_arg: 'from' testlist
+#yield_arg: 'from' test | testlist
+
+async_funcdef: 'async' funcdef
+
+parameters: '(' [typedargslist] ')'
+tfpdef: NAME [':' test]
+tfpdefbase: tfpdef ['=' test]
+tfpdeftwo: '**' tfpdef [',']
+tfpdef2: '*' [tfpdef] {',' tfpdefbase} [',' [tfpdeftwo]]
+typedargslist: tfpdef2 | tfpdeftwo |
+	(tfpdefbase {',' tfpdefbase} [',' [tfpdef2 | tfpdeftwo]])
+block: '{'  stats '}'
+stats: [NLINE] STAT {NLINE STAT} [NLINE]	
+STAT: simple_stmt 
+#simple_stmt: small_stmt (';' small_stmt)* [';'] NEWLINE
+
+simple_stmt: expr_stmt 
+               
+
+expr_stmt: testlist_star_expr 
+			annassign | 
+		   ( augassign yield_expr|testlist) |
+           {'=' yield_expr|testlist_star_expr}
+annassign: ':' test ['=' test]           
+testlist_star_expr: test|star_expr {',' test|star_expr} [','] 
+augassign: '+=' | '-=' | '*=' | '@=' | '/=' | '%=' | '&=' | '|=' | '^=' |
+            '<<=' | '>>=' | '**=' | '//='
+star_expr: '*' expr    
+del_stmt: 'del' exprlist
+exprlist: expr|star_expr {',' ( expr|star_expr )} [',']
+pass_stmt: 'pass'
+flow_stmt: break_stmt | continue_stmt | return_stmt | raise_stmt | yield_stmt         
+break_stmt: 'break'
+continue_stmt: 'continue'
+return_stmt: 'return' [testlist]         
+raise_stmt: 'raise' [test ['from' test]]
+yield_stmt: yield_expr
+import_stmt: 'import' dotname [':' namelist] ['as' namelist]
+global_stmt: 'global' dotname         
+nonlocal_stmt: 'nonlocal' dotname
+assert_stmt: 'assert' test [',' test]
+compound_stmt: if_stmt | while_stmt | for_stmt | try_stmt | 
+		with_stmt | funcdef | classdef | decorated | async_stmt
+         
+if_stmt: 'if' test block {'elif' test block} ['else' block]          
+while_stmt: 'while' test block ['else' block]
+for_stmt: 'for' exprlist 'in' testlist block ['else' block]
+testlist: test {',' test} [',']
+try_stmt: 'try' block
+           ({except_clause block} ['else' block] ['finally' block])
+           |  ('finally' block)
+with_stmt: 'with' with_item {',' with_item}  block
+with_item: test ['as' expr]
+funcdef: 'func' NAME parameters ['->' test]  block
+classdef: 'class' NAME ['(' [arglist] ')'] block
+arglist: argument {',' argument}  [',']
+argument: ( test [comp_for]) |
+           ( test '=' test ) |
+           ( '**' test )     |
+           ( '*' test )
+           
+comp_iter: comp_for | comp_if
+sync_comp_for: 'for' exprlist 'in' or_test [comp_iter]
+comp_for: ['async'] sync_comp_for
+comp_if: 'if' test_nocond [comp_iter]
+
+decorated: decorators  classdef | funcdef | async_funcdef 
+async_stmt: 'async' funcdef | with_stmt | for_stmt           
+         
+       

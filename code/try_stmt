@@ -1,0 +1,5 @@
+try{
+	a=2
+}except{
+	print(a)
+}

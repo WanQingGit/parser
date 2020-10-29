@@ -1,0 +1,28 @@
+START:[NLINE] STAT [NLINE]
+STAT: factor {'=' NUM}
+#STAT: variable
+#variable: mul { '+' mul }
+#mul: NUM  {'*' NUM }
+#exp: BOOL | NUM  | NULL |  prefixexp
+#prefixexp: variable | functioncall | ('(' exp ')')
+#variable:  NAME | (prefixexp '[' exp ']') | (prefixexp '.' NAME) 
+#functioncall:  prefixexp '(' ')'
+
+atom: NAME | NUM | STRING | BOOL | NULL 
+atom_expr: atom { trailer }
+trailer: ('(' [arglist] ')') | ('[' subscriptlist ']') | ('.' NAME)
+power: atom_expr ['**' factor]
+factor: ('+'|'-'|'~' factor )| power
+#term: factor {'*'|'@'|'/'|'%'|'//' factor}
+#arith_expr: term {'+'|'-' term}
+#shift_expr: arith_expr {'<<'|'>>' arith_expr}
+#and_expr: shift_expr {'&' shift_expr}
+#xor_expr: and_expr {'^' and_expr}
+#expr: xor_expr {'|' xor_expr }
+
+#comparison: expr { comp_op expr }
+#comp_op: '<'|'>'|'=='|'>='|'<='|'<>'|'!='|'in'|( 'not' 'in') #|'is'|'is' 'not'
+#not_test: ('not' not_test ) | comparison
+#and_test: not_test { 'and' not_test }
+#or_test: and_test { 'or' and_test }
+

@@ -1,0 +1,6 @@
+var a,b,c,d
+a=b and c  or   d and a
+a=b or  c  and  d or  a
+a=b or  c and d
+a=b or  c or  d
+a=b and c and d

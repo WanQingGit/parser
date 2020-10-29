@@ -1,0 +1,6 @@
+d,e=1,2
+func test1(a,b){
+	d=4
+	print("hello",e)
+}
+test1(1,2)
